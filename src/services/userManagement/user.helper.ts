@@ -8,7 +8,7 @@ import {
 import ServiceError from '../../util/serviceError';
 import { signUpRequest } from './user.interface';
 
-export function signUpDataValidate(data: signUpRequest) {
+export function signUpDataValidate(data: signUpRequest):void {
   if (!emailRegex.test(data.username))
     throw new ServiceError('BR-1', 400, 'Invalid Email Address');
   if (
@@ -25,6 +25,6 @@ export function signUpDataValidate(data: signUpRequest) {
   if (!nameRegex.test(data.name))
     throw new ServiceError('BR-1', 400, 'Invalid name');
 
-  if (!nameRegex.test(data.phoneNumber))
+  if (!phoneNumberRegex.test(data.phoneNumber))
     throw new ServiceError('BR-1', 400, 'Invalid phoneNumber');
 }
