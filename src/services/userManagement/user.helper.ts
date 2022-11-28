@@ -6,9 +6,9 @@ import {
   phoneNumberRegex,
 } from '../../constants';
 import ServiceError from '../../util/serviceError';
-import { signUpRequest } from './user.interface';
+import { SignUpRequest } from './user.interface';
 
-export function signUpDataValidate(data: signUpRequest):void {
+export function signUpDataValidate(data: SignUpRequest):void {
   if (!emailRegex.test(data.username))
     throw new ServiceError('BR-1', 400, 'Invalid Email Address');
   if (

@@ -1,13 +1,9 @@
-import { DataTypes, ModelStatic, Sequelize } from 'sequelize';
-import { PostgresTable } from '../postgres.interface';
+import { DataTypes } from 'sequelize';
+import { PostgresTable } from '../postgresTable.model';
 
-class UserCredentialTable implements PostgresTable {
-  private userCreds: ModelStatic<any>;
-  private tableName: string;
-  private tableSchema: any;
-  readonly modelName: string;
+class UserCredentialTable extends PostgresTable {
   constructor(tableName: string) {
-    this.tableSchema = {
+    const tableSchema = {
       userId: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -23,18 +19,15 @@ class UserCredentialTable implements PostgresTable {
         allowNull: false,
       },
     };
-    this.tableName = tableName;
-    this.userCreds = null;
-    this.modelName = 'UserCreds';
+    super(tableName, 'UserCredentialTable', tableSchema);
   }
-  createOrAlterTable(sequelize: Sequelize): void {
-    this.userCreds = sequelize.define(this.modelName, this.tableSchema, {
-      tableName: this.tableName,
+
+  async getUserCreds(username: string) {
+    const userCredsInfo = await this.table.findOne({
+      where: { username },
+      attributes: ['password', 'userId'],
     });
-  }
- 
-  getTable(): ModelStatic<any> {
-    return this.userCreds;
+    return userCredsInfo.dataValues;
   }
 }
 

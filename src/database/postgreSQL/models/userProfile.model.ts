@@ -1,16 +1,10 @@
-import { DataTypes, ModelStatic, Sequelize } from 'sequelize';
-import { PostgresTable } from '../postgres.interface';
+import { DataTypes } from 'sequelize';
+import { PostgresTable } from '../postgresTable.model';
 
-class UserProfileTable implements PostgresTable {
-  private userProfile: ModelStatic<any>;
-  private tableName: string;
-  private tableSchema: any;
-  readonly modelName: string;
+class UserProfileTable extends PostgresTable {
   constructor(tableName: string) {
-    this.tableName = tableName;
-    this.userProfile = null;
-    this.modelName = 'UserProfile';
-    this.tableSchema = {
+   
+    const tableSchema = {
       userId: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -33,21 +27,17 @@ class UserProfileTable implements PostgresTable {
         type: DataTypes.STRING,
       },
     };
+    super(tableName,'UserProfile',tableSchema)
   }
-  createOrAlterTable(sequelize: Sequelize): void {
-    this.userProfile = sequelize.define(this.modelName, this.tableSchema, {
-      tableName: this.tableName,
-    });
-  }
+  
   associate(models: any): void {
-    this.userProfile.hasOne(models.UserCreds, {
+    console.log(models)
+    this.table.hasOne(models.UserCredentialTable, {
       foreignKey: 'userId',
       sourceKey: 'userId',
     });
   }
-  getTable(): ModelStatic<any> {
-    return this.userProfile;
-  }
+  
 }
 
 export default new UserProfileTable('UserProfile');
