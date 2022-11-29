@@ -28,6 +28,7 @@ class UserProfileTable extends PostgresTable {
       },
     };
     super(tableName,'UserProfile',tableSchema)
+   
   }
   
   associate(models: any): void {

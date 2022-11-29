@@ -3,21 +3,25 @@ import userPermissions from '../../database/postgreSQL/models/userPermissions.mo
 import ServiceError from '../../util/serviceError';
 import { AuthenticatedRequest } from '../../util/shared.interface';
 
-export async function isAuthorizedToRead(
+export async function isAuthorized(
   request: AuthenticatedRequest,
   _response: Response,
   next: NextFunction,
 ): Promise<void> {
-  const resourceId = request.params.resourceId;
-  const userId = request?.context?.userId;
-  let isAuthorised = false;
-  if (request.method === 'GET')
-    isAuthorised = await checkAuthorisation(userId, resourceId, 'READ');
-  else isAuthorised = await checkAuthorisation(userId, resourceId, 'WRITE');
-  if (isAuthorised) {
-    next();
-  } else {
-    next(new ServiceError('UNA-2', 401, 'Not Authorised to read'));
+  try {
+    const resourceId = request.params.resourceId;
+    const userId = request?.context?.userId;
+    let isAuthorised = false;
+    if (request.method === 'GET')
+      isAuthorised = await checkAuthorisation(userId, resourceId, 'READ');
+    else isAuthorised = await checkAuthorisation(userId, resourceId, 'WRITE');
+    if (isAuthorised) {
+      next();
+    } else {
+      next(new ServiceError('UNA-2', 401, 'Not Authorised to Perform action'));
+    }
+  } catch (error) {
+    next(error);
   }
 }
 
@@ -27,9 +31,9 @@ async function checkAuthorisation(
   requirePermission: string,
 ): Promise<boolean> {
   const result = await userPermissions.getUserPermission(userId, resourceId);
-  if (result.permission === 'WRITE') return true;
-  if (result.permission === 'READ' && requirePermission === 'WRITE')
+  if (result?.permission === 'WRITE') return true;
+  if (result?.permission === 'READ' && requirePermission === 'WRITE')
     return false;
-  if (!result.permission && requirePermission === 'READ') return true;
+  if (!result?.permission && requirePermission === 'READ') return true;
   return false;
 }

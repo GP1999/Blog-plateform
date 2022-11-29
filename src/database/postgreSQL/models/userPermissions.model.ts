@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Transaction } from 'sequelize';
 import { PostgresTable } from '../postgresTable.model';
 
 interface UserPermissionsInterface {
@@ -26,7 +26,7 @@ class UserPermissions extends PostgresTable {
   }
   async addUserAndPermission(
     data: UserPermissionsInterface,
-    transaction?: any,
+    transaction?: Transaction,
   ) :Promise<void>{
     await this.table.create({ ...data }, { transaction });
   }
@@ -40,7 +40,7 @@ class UserPermissions extends PostgresTable {
         resourceId,
       },
     });
-    return userPermission.dataValues;
+    return userPermission?.dataValues;
   }
 }
 

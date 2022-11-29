@@ -1,6 +1,8 @@
 import { Sequelize } from 'sequelize';
 import userCreds from './models/userCredentials.model';
 import userProfile from './models/userProfile.model';
+import userPermissions from './models/userPermissions.model';
+import blogs from './models/blogs.model';
 import { PostgresTable } from './postgres.interface';
 
 interface PostgresConnectionOptions {
@@ -27,7 +29,7 @@ class PostgresAdaptor {
         host: 'localhost',
         dialect: 'postgres',
         sync: {
-          alter: true, //only for dev purpose
+          force: false, //only for dev purpose
         },
       },
     );
@@ -62,4 +64,4 @@ class PostgresAdaptor {
   }
 }
 
-export default new PostgresAdaptor([userCreds, userProfile]);
+export default new PostgresAdaptor([userCreds, userProfile,userPermissions,blogs]);
