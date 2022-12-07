@@ -42,11 +42,18 @@ class Blogs extends PostgresTable {
   async deleteBlog(blogId: string) {
     return await this.table.destroy({ where: { blogId } });
   }
-  async getListOfBlogsTitles(sequelize: Sequelize) {
+  async getListOfBlogsTitles(sequelize: Sequelize,query:string) {
     return await sequelize.query(
-      `SELECT "blogId","writerId","header",bl."createdAt" as createdAt ,us."name" as writer FROM public."Blogs" as bl,public."UserProfile" as us where bl."writerId"=us."userId" ORDER BY bl."createdAt" DESC;`,
+      `SELECT "blogId","writerId","header",bl."createdAt" as createdAt ,us."name" as writer FROM public."Blogs" as bl,public."UserProfile" as us where bl."writerId"=us."userId" AND bl."header" LIKE '%${query}%' ORDER BY bl."createdAt" DESC;`,
       { type: QueryTypes.SELECT },
     );
+  }
+  async getCountOfBlogsOfWriter(sequelize:Sequelize,writerId: string) {
+    const result=await sequelize.query(
+      `SELECT count(*) from public."Blogs" where "writerId"='${writerId}';`,
+      { type: QueryTypes.SELECT },
+    ) as unknown;
+    return result[0]?.count
   }
 }
 

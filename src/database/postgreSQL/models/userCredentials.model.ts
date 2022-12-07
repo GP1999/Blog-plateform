@@ -27,7 +27,7 @@ class UserCredentialTable extends PostgresTable {
       where: { username },
       attributes: ['password', 'userId'],
     });
-    return userCredsInfo.dataValues;
+    return userCredsInfo?.dataValues;
   }
 }
 

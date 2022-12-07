@@ -59,7 +59,7 @@ export async function logIn(
     console.log(password);
     const userInfo = await userCredsTable.getUserCreds(username);
     const passwordHash = getHash(password);
-    if (passwordHash !== userInfo.password)
+    if (passwordHash !== userInfo?.password)
       throw new ServiceError('UA-1', 401, 'Incorrect username or password');
 
     const accessToken = createJwt({ userId: userInfo.userId }, '10 days');

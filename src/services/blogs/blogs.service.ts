@@ -13,8 +13,10 @@ export async function getListOfBlogs(
   next: NextFunction,
 ): Promise<void> {
   try {
+    const queryString=(_request.query['query']||" ") as string
+    
     const result = await blogs.getListOfBlogsTitles(
-      postgresAdaptor.getConnection(),
+      postgresAdaptor.getConnection(),queryString
     );
     response.status(200).send(result);
     return;
@@ -113,3 +115,18 @@ export async function deleteBlog(
     next(error);
   }
 }
+
+export async function getNumberOfBlogs(
+  request: AuthenticatedRequest,
+  response: Response,
+  next: NextFunction,
+):Promise<void>{
+  try{
+    const writerId=request.params.writerId
+    const result=await blogs.getCountOfBlogsOfWriter( postgresAdaptor.getConnection(),writerId);
+    response.status(200).send({ blogsCount: +result});
+
+  }catch(error){
+    next(error)
+  }
+};
