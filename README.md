@@ -16,8 +16,11 @@ Design a simple multi-user publishing/blogging platform, allowing writers to pub
 
 # Design And Solution
 
+
+
 * ### Calculation
 * Avarage size of 1 Blog = 20Kb <br>
+
 * Daily Active Writers =10000 <br>
 * Avarage number of blogs Writer write per day = 1 <br>
 *avarage Write load per day = 1* 20*10000 = 200000Kb = 200Mb <br>
@@ -26,13 +29,10 @@ Design a simple multi-user publishing/blogging platform, allowing writers to pub
 * Read load per day =(3 * 20Kb *5 *10^6 )/10^6 = 300Gb <br>
 
 ## System Diagram
+<img width="1375" alt="Screenshot 2022-12-08 at 9 46 31 PM" src="https://user-images.githubusercontent.com/39650633/206507154-3fa0aafe-ed33-4acf-ad81-cf9bf53b8aa5.png">
 
-![alt text](https://github.com/GP1999/Blog-plateform
-/blob/main/doc/systemDesign.png?raw=true)
+
 
 ## Database Schema
-
-![alt text](https://github.com/GP1999/Blog-plateform
-/blob/main/doc/db.png?raw=true)
-
+<img width="1375" alt="Screenshot 2022-12-08 at 9 18 49 PM" src="https://user-images.githubusercontent.com/39650633/206507467-76c28cc8-7852-4ae6-881d-03403fbea2c9.png">
 
